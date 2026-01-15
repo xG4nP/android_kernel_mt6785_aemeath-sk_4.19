@@ -480,17 +480,21 @@ static int mtu3_gadget_pullup(struct usb_gadget *gadget, int is_on)
 	struct mtu3 *mtu = gadget_to_mtu3(gadget);
 	unsigned long flags;
 
-	dev_dbg(mtu->dev, "%s (%s) for %sactive device\n", __func__,
-		is_on ? "on" : "off", mtu->is_active ? "" : "in");
+	dev_info(mtu->dev, "%s (%s) is_active: %d\n", __func__, 
+		is_on ? "on" : "off", mtu->is_active);
 
-	/* we'd rather not pullup unless the device is active. */
 	spin_lock_irqsave(&mtu->lock, flags);
 
 	is_on = !!is_on;
+
+	
+	if (is_on && !mtu->is_active) {
+		mtu->is_active = true; 
+	}
+
 	if (!mtu->is_active) {
-		/* save it for mtu3_start() to process the request */
 		mtu->softconnect = is_on;
-	} else if (is_on != mtu->softconnect) {
+	} else {
 		mtu->softconnect = is_on;
 		mtu3_dev_on_off(mtu, is_on);
 	}
@@ -519,8 +523,14 @@ static int mtu3_gadget_start(struct usb_gadget *gadget,
 	mtu->softconnect = 0;
 	mtu->gadget_driver = driver;
 
-	if (mtu->ssusb->dr_mode == USB_DR_MODE_PERIPHERAL)
+	/* 
+	 * FIX: Allow mtu3_start even in OTG mode so the gadget
+	 * hardware registers are ready when the role switches to device.
+	 */
+	if (mtu->ssusb->dr_mode == USB_DR_MODE_PERIPHERAL || 
+	    mtu->ssusb->dr_mode == USB_DR_MODE_OTG) {
 		mtu3_start(mtu);
+	}
 
 	spin_unlock_irqrestore(&mtu->lock, flags);
 
