@@ -2923,6 +2923,7 @@ page_owner=on loop.max_part=7";
 		mediatek,spm-mgr = <1>;
 		maximum-speed = "high-speed";
 		usb-role-switch;
+        role-switch-default-mode = "peripheral";
 		status = "okay";
 		cdp-block;
 
