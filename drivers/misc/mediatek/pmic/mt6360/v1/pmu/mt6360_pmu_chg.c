@@ -604,7 +604,11 @@ static int __mt6360_enable_usbchgen(struct mt6360_pmu_chg_info *mpci, bool en)
 			dev_info(mpci->dev, "%s: CDP free\n", __func__);
 	}
 	mt6360_set_usbsw_state(mpci, usbsw);
-
+	
+#ifndef DP_DM_CTL_N
+#define DP_DM_CTL_N 0x0
+#endif
+	
 	if (mpci->rerun_apsd) {
 		ret = mt6360_pmu_reg_write(mpci->mpi,
 					MT6360_PMU_DPDM_CTRL, DP_DM_CTL_N);
@@ -2169,7 +2173,7 @@ static const struct charger_ops mt6360_chg_ops = {
 	.enable_discharge = mt6360_enable_discharge,
 	/* Charger type detection */
 	.enable_chg_type_det = mt6360_enable_chg_type_det,
-	.rerun_apsd = mt6360_rerun_apsd,
+	//.rerun_apsd = mt6360_rerun_apsd,
 	/* ADC */
 	.get_adc = mt6360_get_adc,
 	.get_vbus_adc = mt6360_get_vbus,
