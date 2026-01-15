@@ -221,30 +221,30 @@ static void mtk_aal_write_mask(void __iomem *address, u32 data, u32 mask)
 }
 #endif
 
-#define AALERR(fmt, arg...) pr_notice("[ERR]%s:" fmt, __func__, ##arg)
+#define AALERR(fmt, arg...) pr_debug("[ERR]%s:" fmt, __func__, ##arg)
 
 static bool debug_flow_log;
 #define AALFLOW_LOG(fmt, arg...) do { \
 	if (debug_flow_log) \
-		pr_notice("[FLOW]%s:" fmt, __func__, ##arg); \
+		pr_debug("[FLOW]%s:" fmt, __func__, ##arg); \
 	} while (0)
 
 static bool debug_api_log;
 #define AALAPI_LOG(fmt, arg...) do { \
 	if (debug_api_log) \
-		pr_notice("[API]%s:" fmt, __func__, ##arg); \
+		pr_debug("[API]%s:" fmt, __func__, ##arg); \
 	} while (0)
 
 static bool debug_write_cmdq_log;
 #define AALWC_LOG(fmt, arg...) do { \
 	if (debug_write_cmdq_log) \
-		pr_notice("[WC]%s:" fmt, __func__, ##arg); \
+		pr_debug("[WC]%s:" fmt, __func__, ##arg); \
 	} while (0)
 
 static bool debug_irq_log;
 #define AALIRQ_LOG(fmt, arg...) do { \
 	if (debug_irq_log) \
-		pr_notice("[IRQ]%s:" fmt, __func__, ##arg); \
+		pr_debug("[IRQ]%s:" fmt, __func__, ##arg); \
 	} while (0)
 
 /* config register which might have extra DRE3 aal hw */
