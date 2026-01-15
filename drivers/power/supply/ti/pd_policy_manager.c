@@ -35,11 +35,11 @@
 #define PD_SRC_PDO_TYPE_VARIABLE	2
 #define PD_SRC_PDO_TYPE_AUGMENTED	3
 
-#define BATT_MAX_CHG_VOLT		4460 //new requirement from xiaomi hw, CP should config 4460
-#define BATT_FAST_CHG_CURR		6000
-#define BUS_MIVR_THRESHOLD		4200
+#define BATT_MAX_CHG_VOLT		4480 //new requirement from xiaomi hw, CP should config 4460
+#define BATT_FAST_CHG_CURR		6600
+#define BUS_MIVR_THRESHOLD		4400
 #define	BUS_OVP_THRESHOLD		12000
-#define	BUS_OVP_ALARM_THRESHOLD		9500
+#define	BUS_OVP_ALARM_THRESHOLD		10500
 
 #define BUS_VOLT_INIT_UP		300
 
