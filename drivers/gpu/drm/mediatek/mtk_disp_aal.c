@@ -285,21 +285,21 @@ static int disp_aal_get_cust_led(void)
 	"mediatek,lcd-backlight");
 	if (!led_node) {
 		ret = -1;
-		pr_notice("Cannot find LED node from dts\n");
+		pr_err("Cannot find LED node from dts\n");
 	} else {
 		ret = of_property_read_u32(led_node, "led_mode", &led_mode);
 		if (!ret)
 			atomic_set(&g_led_mode, led_mode);
 		else
-			pr_notice("led dts can not get led mode data.\n");
+			pr_err"led dts can not get led mode data.\n");
 
 		ret = of_property_read_u32_array(led_node,
 	    "pwm_config", pwm_config, ARRAY_SIZE(pwm_config));
 	}
 
 	if (ret)
-		pr_notice("get pwm cust info fail\n");
-	pr_notice("%s mode=%u\n", __func__, atomic_read(&g_led_mode));
+		pr_err("get pwm cust info fail\n");
+	pr_debug("%s mode=%u\n", __func__, atomic_read(&g_led_mode));
 
 	return ret;
 }
@@ -389,16 +389,16 @@ static void disp_aal_notify_backlight_log(int bl_1024)
 	diff_mesc = timevaldiff(&g_aal_log_prevtime, &aal_time);
 	if (!debug_api_log)
 		return;
-	pr_notice("time diff = %lu\n", diff_mesc);
+	pr_debug("time diff = %lu\n", diff_mesc);
 
 	if (diff_mesc > LOG_INTERVAL_TH) {
 		if (g_aal_log_index == 0) {
-			pr_notice("%s: %d/1023\n", __func__, bl_1024);
+			pr_debug("%s: %d/1023\n", __func__, bl_1024);
 		} else {
 			sprintf(g_aal_log_buffer + strlen(g_aal_log_buffer),
 					"%s, %d/1023 %03lu.%03lu", __func__,
 					bl_1024, tsec, tusec);
-			pr_notice("%s\n", g_aal_log_buffer);
+			pr_debug("%s\n", g_aal_log_buffer);
 			g_aal_log_index = 0;
 		}
 	} else {
@@ -415,7 +415,7 @@ static void disp_aal_notify_backlight_log(int bl_1024)
 		}
 
 		if ((g_aal_log_index >= LOG_BUFFER_SIZE) || (bl_1024 == 0)) {
-			pr_notice("%s\n", g_aal_log_buffer);
+			pr_debug("%s\n", g_aal_log_buffer);
 			g_aal_log_index = 0;
 		}
 	}
@@ -940,59 +940,59 @@ void dump_hist(struct DISP_AAL_HIST *data)
 {
 	int i = 0;
 
-	pr_notice("aal0_maxHist:\n");
+	pr_debug("aal0_maxHist:\n");
 	for (i = 0; i < 3; i++) {
-		pr_notice("%d %d %d %d %d %d %d %d %d %d",
+		pr_debug("%d %d %d %d %d %d %d %d %d %d",
 			data->aal0_maxHist[i*10 + 0], data->aal0_maxHist[i*10 + 1],
 			data->aal0_maxHist[i*10 + 2], data->aal0_maxHist[i*10 + 3],
 			data->aal0_maxHist[i*10 + 4], data->aal0_maxHist[i*10 + 5],
 			data->aal0_maxHist[i*10 + 6], data->aal0_maxHist[i*10 + 7],
 			data->aal0_maxHist[i*10 + 9], data->aal0_maxHist[i*10 + 9]);
 	}
-	pr_notice("%d %d %d", data->aal0_maxHist[30], data->aal0_maxHist[31],
+	pr_debug("%d %d %d", data->aal0_maxHist[30], data->aal0_maxHist[31],
 			data->aal0_maxHist[32]);
 
-	pr_notice("aal0_yHist:\n");
+	pr_debug("aal0_yHist:\n");
 	for (i = 0; i < 3; i++) {
-		pr_notice("%d %d %d %d %d %d %d %d %d %d",
+		pr_debug("%d %d %d %d %d %d %d %d %d %d",
 			data->aal0_yHist[i*10 + 0], data->aal0_yHist[i*10 + 1],
 			data->aal0_yHist[i*10 + 2], data->aal0_yHist[i*10 + 3],
 			data->aal0_yHist[i*10 + 4], data->aal0_yHist[i*10 + 5],
 			data->aal0_yHist[i*10 + 6], data->aal0_yHist[i*10 + 7],
 			data->aal0_yHist[i*10 + 9], data->aal0_yHist[i*10 + 9]);
 	}
-	pr_notice("%d %d %d", data->aal0_yHist[30], data->aal0_yHist[31],
+	pr_debug("%d %d %d", data->aal0_yHist[30], data->aal0_yHist[31],
 			data->aal0_yHist[32]);
 	if (isDualPQ) {
 		pr_err("aal1_maxHist:\n");
 		for (i = 0; i < 3; i++) {
-			pr_notice("%d %d %d %d %d %d %d %d %d %d",
+			pr_debug("%d %d %d %d %d %d %d %d %d %d",
 				data->aal1_maxHist[i*10 + 0], data->aal1_maxHist[i*10 + 1],
 				data->aal1_maxHist[i*10 + 2], data->aal1_maxHist[i*10 + 3],
 				data->aal1_maxHist[i*10 + 4], data->aal1_maxHist[i*10 + 5],
 				data->aal1_maxHist[i*10 + 6], data->aal1_maxHist[i*10 + 7],
 				data->aal1_maxHist[i*10 + 9], data->aal1_maxHist[i*10 + 9]);
 		}
-		pr_notice("%d %d %d", data->aal1_maxHist[30], data->aal1_maxHist[31],
+		pr_debug("%d %d %d", data->aal1_maxHist[30], data->aal1_maxHist[31],
 				data->aal1_maxHist[32]);
-		pr_notice("aal1_yHist:\n");
+		pr_debug("aal1_yHist:\n");
 		for (i = 0; i < 3; i++) {
-			pr_notice("%d %d %d %d %d %d %d %d %d %d",
+			pr_debug("%d %d %d %d %d %d %d %d %d %d",
 				data->aal1_yHist[i*10 + 0], data->aal1_yHist[i*10 + 1],
 				data->aal1_yHist[i*10 + 2], data->aal1_yHist[i*10 + 3],
 				data->aal1_yHist[i*10 + 4], data->aal1_yHist[i*10 + 5],
 				data->aal1_yHist[i*10 + 6], data->aal1_yHist[i*10 + 7],
 				data->aal1_yHist[i*10 + 9], data->aal1_yHist[i*10 + 9]);
 		}
-		pr_notice("%d %d %d", data->aal1_yHist[30], data->aal1_yHist[31],
+		pr_debug("%d %d %d", data->aal1_yHist[30], data->aal1_yHist[31],
 			data->aal1_yHist[32]);
 	}
 
-	pr_notice("serviceFlags:%u, backlight: %d, colorHist: %d\n",
+	pr_debug("serviceFlags:%u, backlight: %d, colorHist: %d\n",
 			data->serviceFlags, data->backlight, data->aal0_colorHist);
-	pr_notice("requestPartial:%d, panel_type: %u\n",
+	pr_debug("requestPartial:%d, panel_type: %u\n",
 			data->requestPartial, data->panel_type);
-	pr_notice("essStrengthIndex:%d, ess_enable: %d, dre_enable: %d\n",
+	pr_debug("essStrengthIndex:%d, ess_enable: %d, dre_enable: %d\n",
 			data->essStrengthIndex, data->ess_enable,
 			data->dre_enable);
 }
